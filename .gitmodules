@@ -1,3 +1,0 @@
-[submodule "the-rust-programming-language/playground"]
-	path = the-rust-programming-language/playground
-	url = git@github.com:LitoMore/rust-playground.git

@@ -218,3 +218,12 @@ Rust has three kinds of loops: `loop`, `while`, and `for`.
 ##### Returning Values from Loops
 
 After the loop, we use a semicolon to end the statement that assigns the value to `result`.
+
+## Understanding Ownership
+
+### What Is Ownership?
+
+Rust's central feature is *ownership*.
+
+Rust uses a third approach: memory is managed through a system of ownership with a set of rules that
+the compiler checks at compile time.
