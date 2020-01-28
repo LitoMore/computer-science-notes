@@ -268,7 +268,7 @@ The memory is automatically returned once the variable that owns it goes out of 
 
 Rust calls `drop` automatically at the closing curly bracket.
 
-#### Ways Variables and Data Interact: Move
+##### Ways Variables and Data Interact: Move
 
 The length is how much memory, in bytes, the contents of the `String` in currently using. The
 capacity is the total amount of memory, in bytes, that the `String` has received from the operating
@@ -279,7 +279,7 @@ Rust also invalidates the first variable, instead of being called a shallow copy
 
 Rust will never automatically create "deep" copies of your data.
 
-#### Stack-Only Data: Copy
+##### Stack-Only Data: Copy
 
 Rust won't let us annotate a type with the `Copy` trait if the type, or any of its parts, has
 implemented the `Drop` trait.
@@ -292,3 +292,13 @@ Here are some of the types that are `Copy`:
 - The character type, `char`
 - Tuples, if they only contain types that are also `Copy` (`(i32, i32)` is copy, but
   `(i32, String)` is not)
+
+#### Ownership and Functions
+
+Passing a variable to a function will move or copy, just as assignment does.
+
+#### Return Values and Scope
+
+The ownership of a variable follows the same pattern every time: assigning a value to another
+variable moves it. When a variable that includes data on the heap goes out of scope, the value will
+be cleaned up by `drop` unless the data has been moved to be owned by another variable.
