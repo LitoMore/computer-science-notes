@@ -1,3 +1,10 @@
 # The Rust Programming Language
 target
 **/*.rs.bk
+
+# The Swift Programming Language
+.build
+.swiftpm
+*.xcodeproj
+Packages
+Package.resolved
