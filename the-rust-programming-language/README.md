@@ -225,5 +225,70 @@ After the loop, we use a semicolon to end the statement that assigns the value t
 
 Rust's central feature is *ownership*.
 
-Rust uses a third approach: memory is managed through a system of ownership with a set of rules that
-the compiler checks at compile time.
+Rust uses a third approach: memory is managed through a system of ownership with a set of rules
+that the compiler checks at compile time.
+
+#### The Stack and the Heap
+
+Pushing values onto the stack is not considered allocating. Because the pointer is a known, fixed
+size, you can strore the pointer on the stack, but when you want the actual data, you must follow
+the pointer.
+
+Pushing to the stack is faster then allocating on the heap because the operating system never has
+to search for a place to store new data; that location is always at the top of the stack.
+
+Accessing data in help is slower than accessing data on the stack because you have to follow a
+pointer to get there.
+
+When your code calls a function, the values passed into the function (including, potentially,
+pointers to data on the heap) and the function's local variables get pushed on the stack. When the
+function is over, those values get popped off the stack.
+
+#### Ownership Rules
+
+- Each value in Rust has a variable that's called its owner
+- There can only be one owner at a time
+- When the owner goes out of scope, the value will be dropped
+
+#### Variable Scope
+
+The variable is valid from the point at which it's declared until the end of the current *scope*.
+
+#### The `String` Type
+
+One reason is that String literals are immutable. Another is that not every string value can be
+known when we write out code.
+
+#### Memory and Allocation
+
+That first part is done by us: when we call `String::from`, its implementation requests the memory
+it needs.
+
+The memory is automatically returned once the variable that owns it goes out of scope.
+
+Rust calls `drop` automatically at the closing curly bracket.
+
+#### Ways Variables and Data Interact: Move
+
+The length is how much memory, in bytes, the contents of the `String` in currently using. The
+capacity is the total amount of memory, in bytes, that the `String` has received from the operating
+system.
+
+Rust also invalidates the first variable, instead of being called a shallow copy, it's known as a
+*move*.
+
+Rust will never automatically create "deep" copies of your data.
+
+#### Stack-Only Data: Copy
+
+Rust won't let us annotate a type with the `Copy` trait if the type, or any of its parts, has
+implemented the `Drop` trait.
+
+Here are some of the types that are `Copy`:
+
+- All the integer types, such as `u32`
+- The Boolean type, `bool`, with values `true` and `false`
+- All the floating point types, such as `f64`
+- The character type, `char`
+- Tuples, if they only contain types that are also `Copy` (`(i32, i32)` is copy, but
+  `(i32, String)` is not)
