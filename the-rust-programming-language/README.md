@@ -302,3 +302,44 @@ Passing a variable to a function will move or copy, just as assignment does.
 The ownership of a variable follows the same pattern every time: assigning a value to another
 variable moves it. When a variable that includes data on the heap goes out of scope, the value will
 be cleaned up by `drop` unless the data has been moved to be owned by another variable.
+
+### References and Borrowing
+
+*References* allow you to refer to some value without taking ownership of it.
+
+The opposite of referencing by using `&` is *dereferencing*, which is a accomplished with the
+dereference operator, `*`.
+
+When functions have references as parameters instead of the actual values, we won't need to return
+the values in order to give back ownership, because we never had ownership.
+
+We call having references as function parameters *borrowing*.
+
+Just as variables are immutable by default, so are references. We're not allowed to modify
+something we have a reference to.
+
+#### Mutable References
+
+But mutable references have one big restriction: you can have only one mutable reference to a
+particular piece of data in a particular scope.
+
+A *data race* is similar to a race condition and happens when these three behaviors occur:
+
+- Two or more pointer access the same data at the same time
+- At least one of the pointers is being used to write to the data
+- There's no mechanism being used to synchronize access to the data
+
+We *also* cannot have a mutable reference while we have an immutable one.
+
+Note that a reference's scope starts from where it is introduced and continues through the last
+time that reference is used.
+
+#### Dangling References
+
+In Rust, by contrast, the compiler guarantees that references will never be dangling references.
+
+#### The Rules of References
+
+- At any given time, you can have *either* one mutable reference *or* any number of imuutable
+  references
+- References must always be valid
