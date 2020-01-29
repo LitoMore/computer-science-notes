@@ -7,7 +7,7 @@
 In principle, there is little different between these primordial grunts and the latest methods of
 information transmission, reception, and response.
 
-![](https://raw.githubusercontent.com/LitoMore/data-science-notes/master/the-beauty-of-mathematics-in-computer-science/img/communication-model.jpg)
+![communication-model]
 
 ### 1.2 Words and numbers
 
@@ -60,3 +60,6 @@ finite set of rules (trivially, we can enumerate all words), the latter cannot.
 - Ambiguity, and the importantce of context in eliminating ambiguity
 
 Mathematics is the underlying thread through past and present.
+
+<!-- Links -->
+[communication-model]: https://raw.githubusercontent.com/LitoMore/data-science-notes/master/the-beauty-of-mathematics-in-computer-science/img/communication-model.jpg
