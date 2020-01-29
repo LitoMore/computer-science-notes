@@ -8,11 +8,17 @@
 
 ## Books
 
-- [Introduction to Computer Graphics](https://github.com/LitoMore/data-science-notes/tree/master/introduction-to-computer-graphics)
-- [The Beauty of Mathematics in Computer Science](https://github.com/LitoMore/data-science-notes/tree/master/the-beauty-of-mathematics-in-computer-science)
-- [The Rust Programming Language](https://github.com/LitoMore/data-science-notes/tree/master/the-rust-programming-language)
-- [The Swift Programming Language](https://github.com/LitoMore/data-science-notes/tree/master/the-swift-programming-language)
+- [Introduction to Computer Graphics][0]
+- [The Beauty of Mathematics in Computer Science][1]
+- [The Rust Programming Language][2]
+- [The Swift Programming Language][3]
 
 ## License
 
 MIT
+
+<!-- Links --->
+[0]: https://github.com/LitoMore/data-science-notes/tree/master/introduction-to-computer-graphics
+[1]: https://github.com/LitoMore/data-science-notes/tree/master/the-beauty-of-mathematics-in-computer-science
+[2]: https://github.com/LitoMore/data-science-notes/tree/master/the-rust-programming-language
+[3]: https://github.com/LitoMore/data-science-notes/tree/master/the-swift-programming-language
