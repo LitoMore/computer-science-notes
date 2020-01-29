@@ -64,3 +64,46 @@ Create an instance of class by putting parentheses after the class name.
 - Properties can have a getter and as setter. The new value has implicit name `newValue`.
 - If you don't need to compute the property but still need to provide code that is run before and
   after setting a new value, use `willSet` and `didSet`.
+
+#### Enumerations and Structures
+
+By default, Swift assigns the raw values starting at zero and incrementing by one each time, but
+you can change this behavior by explicitly specifying values.
+
+Use the `init?(rawValue:)` initializer to make an instance of an enumeration from a raw value.
+
+If an enumeration has raw values, those values are determined as part of the declaration, which
+means every instance of a particular enumeration case always has the same raw value.
+
+Use `struct` to create a strucure. Structures support many of the same behaviors as classes,
+including methods and initializers.
+
+#### Protocols and Extensions
+
+Classes, enumerations, and structs can all adopts protocols.
+
+The declaration of `SimpleClass` doesn't need any of its methods marked as mutating because methods
+on a class can always modify the class.
+
+Use `extension` to add functionality to an existing type, such as new methods and computed
+properties.
+
+You can use a protocol name just like any other named type.
+
+#### Error Handling
+
+Use `throw` to throw an error and `throws` to mark a function that can throw an error.
+
+You can provide multiple `catch` blocks that handle specific errors.
+
+Another way to handle errors is to use `try?` to convert the result to an optional.
+
+Use `defer` to write a block of code that is executed after all other code in the function, just
+before the function returns.
+
+#### Generics
+
+You can make generic forms of functions and methods, as well as classes, enumerations, and
+structures.
+
+Use `where` right before the body to specify a list of requirements.
