@@ -4,9 +4,8 @@
 
 ### How to Use This Book
 
-There is no wrong way to read this book: if you want to skip ahead, go for it!
-You might have to jump back to earlier chapters if you experience any confusion.
-But do whatever works for you.
+There is no wrong way to read this book: if you want to skip ahead, go for it! You might have to
+jump back to earlier chapters if you experience any confusion. But do whatever works for you.
 
 ## Getting Started
 
@@ -14,49 +13,48 @@ But do whatever works for you.
 
 #### Anatomy of a Rust Program
 
-1. Fisrt, Rust style is to indent with four spaces, not a tab.
-2. Second, `println!` calls a Rust macro. Using a `!` means that you're calling
-   a macro instead of a normal function.
-3. Third, we pass this string as an argument to `println!`.
-4. Fourth, we end the line with a semicolon (`;`).
+1. Fisrt, Rust style is to indent with four spaces, not a tab
+2. Second, `println!` calls a Rust macro. Using a `!` means that you're calling a macro instead of
+   a normal function
+3. Third, we pass this string as an argument to `println!`
+4. Fourth, we end the line with a semicolon (`;`)
 
 #### Compiling and Running Are Separate Steps
 
-When using Windows, a file containing debugging information with the *.pdb*
-extension.
+When using Windows, a file containing debugging information with the *.pdb* extension.
 
 Rust is an *ahead-of-time compiled* language.
 
 ### Hello Cargo!
 
-Cargo comes installed with Rust if you used the official installers discussed
-in the "Installation" section.
+Cargo comes installed with Rust if you used the official installers discussed in the "Installation"
+section.
 
 #### Creating a Project with Cargo
 
-It has also initialized a new Git respository along with a *.gitignore* file.
-(Git files will not be generated if they are already in a Git repository.)
+It has also initialized a new Git respository along with a *.gitignore* file. (Git files will not
+be generated if they are already in a Git repository.)
 
-Cargo expects your source file to live inside the *src* directory. The top-level
-project directory is just for README files, license information, configuration files,
-and anything else not related to your code.
+Cargo expects your source file to live inside the *src* directory. The top-level project directory
+is just for README files, license information, configuration files, and anything else not related
+to your code.
 
 #### Building and Running a Cargo Project
 
 *Cargo.lock* keeps track of the exact versions of dependencies in your project.
 
-We can also use `cargo run` to compile the code and then run the resulting executable
-all in one command.
+We can also use `cargo run` to compile the code and then run the resulting executable all in one
+command.
 
 Cargo figured out that the files hadn't changed, so it just ran the binary.
 
-Cargo also provides a command called `cargo check`. This command quickly checks your 
-code to make sure it compiles but doesn't produce an executable.
+Cargo also provides a command called `cargo check`. This command quickly checks your code to make
+sure it compiles but doesn't produce an executable.
 
 - We can build a project using `cargo build` or `cargo check`
 - We can build and run a project in one step using `cargo run`
-- Instead of saving the result of the build in the same directory as our code, Cargo
-  stores it in the *target/debug* directory
+- Instead of saving the result of the build in the same directory as our code, Cargo stores it in
+  the *target/debug* directory
 
 #### Building for Release
 
@@ -78,14 +76,14 @@ You can use `cargo build --release` to compile it with optimizations.
 
 Some languages call this a *static method*.
 
-This `&` indicates that this arguments is a *reference*, which gives you a way to let
-multiple parts of your code access one piece of data without needing to copy that data
-into memory multiple times.
+This `&` indicates that this arguments is a *reference*, which gives you a way to let multiple
+parts of your code access one piece of data without needing to copy that data into memory multiple
+times.
 
 #### Handling Potential Failure with the `Reuslt` Type
 
-Rust warns that you haven't used the `Result` value returned from `read_line`, indicating
-that the program hasn't handled a possible error.
+Rust warns that you haven't used the `Result` value returned from `read_line`, indicating that the
+program hasn't handled a possible error.
 
 ### Generating a Secret Number
 
@@ -97,9 +95,9 @@ Ensuring reproducible builds with the *Cargo.lock* file.
 
 ### Variables and Mutability
 
-Even though compiler errors can be frustrating, they only mean your program isn't safely
-doing what you want it to do yet; they do not mean that you're not a good programmer!
-Experienced Rustaceans still get compiler errors.
+Even though compiler errors can be frustrating, they only mean your program isn't safely doing what
+you want it to do yet; they do not mean that you're not a good programmer! Experienced Rustaceans
+still get compiler errors.
 
 You can make them mutable by adding `mut` in front of the variable name.
 
