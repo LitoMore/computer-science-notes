@@ -1,6 +1,6 @@
 # computer-science-notes
 
-📖 Notes along the way of learning data science
+📖 Notes along the way of learning computer science
 
 | Courses | Books | Others | Podcasts |
 | :-: | :-: | :-: | :-: |
