@@ -62,4 +62,4 @@ finite set of rules (trivially, we can enumerate all words), the latter cannot.
 Mathematics is the underlying thread through past and present.
 
 <!-- Links -->
-[communication-model]: https://raw.githubusercontent.com/LitoMore/data-science-notes/master/the-beauty-of-mathematics-in-computer-science/img/communication-model.jpg
+[communication-model]: https://raw.githubusercontent.com/LitoMore/computer-science-notes/master/the-beauty-of-mathematics-in-computer-science/img/communication-model.jpg
