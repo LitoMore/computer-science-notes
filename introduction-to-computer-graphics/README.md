@@ -59,6 +59,20 @@ lost.
 
 A digital image, no matter what its format, is specified using a ***[coordinate system][7]***.
 
+### 1.2 Elements of 3D Graphics
+
+When we turn to 3D graphics, we find that the most common approaches have more in common with
+vector graphics than with raster graphics. That is, the content of an image is specified as a list
+of geometric object. The technique is referred to as ***[geometric modeling][8]***.
+
+The smallest building blocks that we have to work with, such as line segments and triangles, are
+called ***[geometric primitives][9]***. Different graphics systems make different sets of primitive
+avaiable, but in many cases only very basic shapes such as lines and triangles are considered
+primitive.
+
+Note that once a geometric model has been designed, it can be used as a component in more complex
+models. This is referred to as ***[hierarchical modeling][10]***.
+
 <!-- Links -->
 [0]: https://en.wikipedia.org/wiki/Grayscale
 [1]: https://en.wikipedia.org/wiki/Indexed_color
@@ -68,3 +82,6 @@ A digital image, no matter what its format, is specified using a ***[coordinate 
 [5]: https://en.wikipedia.org/wiki/Lossless_compression
 [6]: https://en.wikipedia.org/wiki/Lossy_compression
 [7]: https://en.wikipedia.org/wiki/Coordinate_system
+[8]: https://en.wikipedia.org/wiki/Geometric_modeling
+[9]: https://en.wikipedia.org/wiki/Geometric_primitive
+[10]: https://en.wikipedia.org/wiki/Bayesian_hierarchical_modeling
