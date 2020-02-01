@@ -73,6 +73,28 @@ primitive.
 Note that once a geometric model has been designed, it can be used as a component in more complex
 models. This is referred to as ***[hierarchical modeling][10]***.
 
+A geometric transform is used to adjust the size, orientation, and position of a geometric object.
+
+The three most basic kinds of geometric transform care called ***scaling***, ***rotation***, and
+***translation***. A scaling transform is used to set the size of an object, that is, to make it
+bigger or smaller by some specified factor. A rotation transform is used  to set an object's
+orientation, by rotating it by some angle about some specific axis. A translation transform is used
+to set the position of an object, by displacing it by a given amount from its original position.
+
+In general, the ultimate goal of 3D graphics is to produce 2D images of the 3D world. The
+transformation from 3D to 2D involves ***viewing*** and ***projection***.
+
+The final step in 3D graphics is to assign colors to individual pixels in the 2D image. This
+process is called ***[rasterization][11]***, and the whole process of producing an image is
+referred to as ***rendering*** the scene.
+
+### 1.3 Hardware and Software
+
+OpenGL is not the only graphics API. The best-known alternative is probably Direct3D, a 3D graphics
+API used for Microsoft Windows. OpenGL is more widely available, since it is not limited to
+Mircosoft, but Direct3D is supported by most graphics cards, and it has often itroduced new
+features earlier than OpenGL.
+
 <!-- Links -->
 [0]: https://en.wikipedia.org/wiki/Grayscale
 [1]: https://en.wikipedia.org/wiki/Indexed_color
@@ -85,3 +107,4 @@ models. This is referred to as ***[hierarchical modeling][10]***.
 [8]: https://en.wikipedia.org/wiki/Geometric_modeling
 [9]: https://en.wikipedia.org/wiki/Geometric_primitive
 [10]: https://en.wikipedia.org/wiki/Bayesian_hierarchical_modeling
+[11]: https://en.wikipedia.org/wiki/Rasterisation
