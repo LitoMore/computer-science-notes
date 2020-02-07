@@ -341,3 +341,5 @@ In Rust, by contrast, the compiler guarantees that references will never be dang
 - At any given time, you can have *either* one mutable reference *or* any number of imuutable
   references
 - References must always be valid
+
+### The Slice Type
