@@ -15,7 +15,7 @@
   functions (*nested* or *local functions*)
 - Similarly, Dart supports top-level *variables*, as well as variables tied to a class or a object
   (static and instance variables). Instance variables are sometimes known as fields or propeties
-- Unlike Java, Dart doesn't have the keywords `public`, `protectec`, and `private`. If an
+- Unlike Java, Dart doesn't have the keywords `public`, `protected`, and `private`. If an
   identifier starts with an underscore (`_`), it's private to its library. For details see
   [Libraries and visibility][2]
 - *Identifiers* can start with a letter or underscore (`_`), followed by any combination of those
