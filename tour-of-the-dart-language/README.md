@@ -64,6 +64,38 @@ superscripts can be indentifiers:
 
 All other words in the table are **reversed words**, which can't be identifiers.
 
+## Variables
+
+### Default value
+
+Uninitialized variables have an initial value of `null`. Even variables with numeric types are
+initially null, because numbers (like everything else in Dart) are objects.
+
+### Final and const
+
+If you never intend to change a variable, use `final` or `const`, either instead of `var` or in
+addition to a type. A final variable can be set only once; a const variable is a compile-time
+constant. (Const variables are implicitly final.) A final top-level or class variable is
+initialized the first time it's used.
+
+The `const` for variables that you want to be **compile-time constants**. If the const variable is
+at the class level, mark it `static const`. Where you declare the variable, set the value to a
+compile-time constant such as a number or string literal, a const variable, or the result of an
+arthmetic operation on constant numbers.
+
+## Built-in types
+
+The Dart language has special support for the following types:
+
+- numbers
+- strings
+- booleans
+- lists (also known as *arrays*)
+- sets
+- maps
+- runes (for expressing Unicode characters in a string)
+- symbols
+
 <!-- Links -->
 [0]: https://api.dart.dev/stable/dart-core/Object-class.html
 [1]: https://dart.dev/guides/language/effective-dart/design#do-annotate-with-object-instead-of-dynamic-to-indicate-any-object-is-allowed
