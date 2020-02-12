@@ -96,6 +96,63 @@ The Dart language has special support for the following types:
 - runes (for expressing Unicode characters in a string)
 - symbols
 
+### Numbers
+
+#### [int][7]
+
+Integer values no larger than 64 bits, depending on the platform. On the Dart VM, values can be
+from -2<sup>63</sup> to 2<sup>63</sup> - 1. Dart that's compiled to JavaScript uses
+[JavaScript numbers][8], allowing values from -2<sup>53</sup> to 2<sup>53</sup> - 1.
+
+#### [double][9]
+
+64-bit (double precision) floating-point nubmers, as specified by the [IEEE 754][10] standard.
+
+Both `int` and `double` are subtypes of num[11]. The num type includes basic operators such as `+`,
+`-`, `/`, and `*`, and is also where you'll find `abs()`, `ceil()`, and `floor()`, among other
+methods. (Bitwise operators, such as `>>`, are defined in the `int` class.) If num and its subtypes
+don't have what you're looking for, the [dart:math][12] library might.
+
+### Strings
+
+You can put the value of an expression inside as string by using `${expression}`. If the expression
+is an identifier, you can skip the `{}`. To get the string corresponding to an object, Dart calls
+the object's `toString()` method.
+
+Literal strings are compile-time constants, as long as any interpolated expression is an
+compile-time constant that evaluates to null or a numeric, string, or boolean value.
+
+### Boolean
+
+To represent boolean values, Dart has a type named `bool`. Only two objects have type bool: the
+boolean literals `true` and `false`, which are both compile-time constant.
+
+### Lists
+
+The List type has many handy methods for manipulating lists. For more information about lists, see
+[Generics][13] and [Collections][14].
+
+### Maps
+
+In general, a map is an object that associates keys and values. Both keys and values can be any
+type of object. Each *key* occurs only once, but you can use the same *value* multiple times. Dart
+support for maps is provided by map literals and the [Map][15] type.
+
+### Runes and grapheme clusters
+
+Unicode defines a unique numeric value for each letter, digit, and symbol used in all of the
+world's writing systems. Because a Dart string is a sequence of UTF-16 code units, expressing
+Unicode code points within a string requires special syntax. The usual way to express a Unicode
+code point is `\uXXXX`, where XXXX is a 4-digit hexadecimal value. For example, the heart
+character (❤️) is `\u2665`. To specify more or less than 4 hex digits, place the value in curly
+brackets. For example, the laughing emoji (😆) is `\u{1f600}`.
+
+### Symbols
+
+A [Symbol][16] object represents an operator or identifier declared in a Dart program. You might
+never need to use symbols, but they're invaluable for APIs that refer to identifiers by name,
+because minification changes identifier names but not identifier symbols.
+
 <!-- Links -->
 [0]: https://api.dart.dev/stable/dart-core/Object-class.html
 [1]: https://dart.dev/guides/language/effective-dart/design#do-annotate-with-object-instead-of-dynamic-to-indicate-any-object-is-allowed
@@ -104,6 +161,16 @@ The Dart language has special support for the following types:
 [4]: https://dart.dev/guides/language/language-tour#if-and-else
 [5]: https://dart.dev/guides/language/language-tour#exceptions
 [6]: https://dart.dev/guides/language/language-tour#asynchrony-support
+[7]: https://api.dart.dev/stable/dart-core/int-class.html
+[8]: https://stackoverflow.com/questions/2802957/number-of-bits-in-javascript-numbers/2803010#2803010
+[9]: https://api.dart.dev/stable/dart-core/double-class.html
+[10]: https://en.wikipedia.org/wiki/IEEE_754
+[11]: https://api.dart.dev/stable/dart-core/num-class.html
+[12]: https://api.dart.dev/stable/dart-math
+[13]: https://dart.dev/guides/language/language-tour#generics
+[14]: https://dart.dev/guides/libraries/library-tour#collections
+[15]: https://api.dart.dev/stable/dart-core/Map-class.html
+[16]: https://api.dart.dev/stable/dart-core/Symbol-class.html
 
 <!-- Keywords -->
 [abstract]: https://dart.dev/guides/language/language-tour#abstract-classes
