@@ -153,6 +153,63 @@ A [Symbol][16] object represents an operator or identifier declared in a Dart pr
 never need to use symbols, but they're invaluable for APIs that refer to identifiers by name,
 because minification changes identifier names but not identifier symbols.
 
+## Functions
+
+Dart is a true object-oriented language, so even functions are objects and have type,
+[Function][17]. This means that functions can be assigned to variables or passed as arguments to
+other functions. You can also call an instance of a Dart class as if it were a function. For
+detials, see [Callable classes][18].
+
+A function can have two types of parameters: *required* and *optional*. The required parameters are
+listed first, followed by any optional parameters. Optional parameters can be *named* or
+*positional*.
+
+### Optional parameters
+
+Optional parameters can be either named or positional, bot not both.
+
+#### Named paramters
+
+Named parameters are a kind of optional parameter, you can annotate them with [@required][19] to
+indicate that the parameter is mandatory - that users must provide a value for the parameter.
+
+```dart
+enableFlags(bold: true, hidden: false);
+```
+
+#### Positional parameters
+
+Wrapping a set of function parameters in `[]` marks them as optional positional parameters.
+
+```dart
+String say(String from, String map, [String device]) {
+  var result = '$from says $msg';
+  if (device != null) {
+    result = '$result with a $device';
+  }
+  return result;
+}
+```
+
+#### Default parameter values
+
+Your function can use `=` to define default values for both named and positional parameters. The
+default values must be compile-time constants. If no default value is provided, the default value
+is `null`.
+
+### The `main()` function
+
+Every app must have a top-level `main()` function, which serves as the entrypoint to the app. The
+`main()` function returns `void` and has an optional `List<String>` parameter for arguments.
+
+```dart
+void main() {
+  querySelector('#sample_text_id')
+    ..text = 'Click me!'
+    ..onClick.listen(reverseText);
+}
+```
+
 <!-- Links -->
 [0]: https://api.dart.dev/stable/dart-core/Object-class.html
 [1]: https://dart.dev/guides/language/effective-dart/design#do-annotate-with-object-instead-of-dynamic-to-indicate-any-object-is-allowed
@@ -171,6 +228,9 @@ because minification changes identifier names but not identifier symbols.
 [14]: https://dart.dev/guides/libraries/library-tour#collections
 [15]: https://api.dart.dev/stable/dart-core/Map-class.html
 [16]: https://api.dart.dev/stable/dart-core/Symbol-class.html
+[17]: https://api.dart.dev/stable/dart-core/Function-class.html
+[18]: https://dart.dev/guides/language/language-tour#callable-classes
+[19]: https://pub.dev/documentation/meta/latest/meta/required-constant.html
 
 <!-- Keywords -->
 [abstract]: https://dart.dev/guides/language/language-tour#abstract-classes
