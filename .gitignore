@@ -1,3 +1,6 @@
+# Introduction to Computer Graphics
+*.class
+
 # JavaScript Algorithms and Data Structures
 node_modules
 package-lock.json
