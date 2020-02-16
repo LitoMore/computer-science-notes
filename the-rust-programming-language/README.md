@@ -343,3 +343,6 @@ In Rust, by contrast, the compiler guarantees that references will never be dang
 - References must always be valid
 
 ### The Slice Type
+
+Another data type that not have ownership is the *slice*. Slices let you reference a contiguous
+sequence of elements in a collection rather than the whole collection.
