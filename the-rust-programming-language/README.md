@@ -346,3 +346,35 @@ In Rust, by contrast, the compiler guarantees that references will never be dang
 
 Another data type that not have ownership is the *slice*. Slices let you reference a contiguous
 sequence of elements in a collection rather than the whole collection.
+
+#### String Slices
+
+Note: String slice range indices must occur at valid UTF-8 character boundarias. If you attempt to
+to create a string slice in the middle of a multibyte character, your program will exit with an
+error. For the purposes of introducing string slices, we are assuming ASCII only in this section; a
+more thorough discussion of UTF-8 handling is in the "Storing UTF-8 Encoded Text with Strings"
+section of Chapter 8.
+
+### Summary
+
+The concepts of ownership, borrowing, and slices ensure memory safety in Rust programs at compile
+time. The Rust language gives you control over your memory usage in the same way as other systems
+programming languages, but having the owner of data automatically clean up that data when the owner
+goes out of scope means you don't have to write and debug extra code to get this control.
+
+## Using Structs to Structure Related Data
+
+### Defining and Instantiating Structs
+
+The define a struct, we enter the keyword `struct` and name the entire struct. A struct's name
+should describe the significance of the pieces of data being grouped together. Then, inside curly
+brackets, we define the names and types of the pieces of data, which we call *fields*.
+
+```rust
+struct User {
+    username: String,
+    email: String,
+    sign_in_count: u64,
+    active: bool,
+}
+```
