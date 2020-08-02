@@ -21,7 +21,7 @@
 MIT
 
 <!-- Links --->
-[0]: https://github.com/LitoMore/computer-science0notes/tree/master/grokking-algorithms
+[0]: https://github.com/LitoMore/computer-science-notes/tree/master/grokking-algorithms
 [1]: https://github.com/LitoMore/computer-science-notes/tree/master/introduction-to-computer-graphics
 [2]: https://github.com/LitoMore/computer-science-notes/tree/master/javascript-algorithms-and-data-structures
 [3]: https://github.com/LitoMore/computer-science-notes/tree/master/the-beauty-of-mathematics-in-computer-science
