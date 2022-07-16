@@ -812,3 +812,335 @@ test "automatic dereference" {
     try expect(thing.y == 10);
 }
 ```
+
+### Unions
+
+Zig's unions allow you to define types which store one value of many possible typed fields; only on
+field may be active at one time.
+
+Bare union types do not have a guaranteed memory layout. Bacause of this, bare unions cannot be used
+to reinterpret memory. Accessing a field in a union which is not active is detectable illegal
+behavior.
+
+```zig
+cosnt Result = union {
+    int: i64,
+    float: f64,
+    bool: bool,
+};
+
+test "simple union" {
+    var result = Result{ .int = 1234 };
+    result.float = 12.34;
+}
+```
+
+```
+test "simple union"...access of inactive union field
+.\tests.zig:342:12: 0x7ff62c89244a in test "simple union" (test.obj)
+    result.float = 12.34;
+           ^
+```
+
+Tagged unions are unions which use an enum to detect which field is active. Here we make use of
+payload capturing again, to switch on the tag type of a union while also capturing the value it
+contains. Here we use a _pointer capture_; captured values are immutable, but with the `|*value|`
+syntax we can capture a pointer to the values instead of the values themeselves. This allows us to
+use dereferencing to mutate the original value.
+
+```zig
+const Tag = enum { a, b, c };
+
+const Tagged = union(Tag) { a: u8, b: f32, c: bool };
+
+test "switch on tagged union" {
+    var value = Tagged{ .b = 1.5 };
+    switch (value) {
+        .a => |*byte| byte.* += 1,
+        .b => |*float| float.* += 2,
+        .c => |*b| b.* = !b.*,
+    }
+    try expect(value.b == 3);
+}
+```
+
+The tag type of tagged union can also be inferred. This is equivalent to the Tagged type above.
+
+```zig
+const Taggged = union(enum) { a: u8, b: f32, c: bool };
+```
+
+`void` member types can have their type omitted from the syntax. Here, none is of type `void`.
+
+```zig
+const Tagged2 = union(enum) { a: u8, b: f32, c: bool, none }
+```
+
+### Integer Rules
+
+Zig supports hex, octal and binary integer literals.
+
+```zig
+const decimal_int: i32 = 98222;
+const hex_int: u8 = 0xff;
+const another_hex_int: u8 = 0xFF;
+const octal_int: u16 = 0o755;
+const binary_int: u8 = 0b11110000;
+```
+
+Underscores may also be placed between digits as a visual separator.
+
+```zig
+const one_billion: u64 = 1_000_000_000;
+const binary_mask: u64 = 0b1_1111_1111;
+const permissions: u64 = 0o7_5_5;
+const big_address: u64 = 0xFF80_0000_0000_0000;
+```
+
+"Integer Widening" is allowed, which means that integers of a type may coerce to an integer of
+another type, providing that the new type can fit all of the values that the old type can.
+
+```zig
+test "integer widening" {
+    const a: u8 = 250;
+    const b: u16 = a;
+    const c: u32 = b;
+    try expect(c == a);
+}
+```
+
+If you have a value stored in an integer that cannot coerce to the type that you want, `@intCast`
+may be used to explicitly convert from one type to the other. If the value given is out of the range
+of the destination type, this is detectable illegal behavior.
+
+```zig
+test "@intCast" {
+    const x: u64 = 200;
+    const y = @intCast(u8, x);
+    try expect(@TypeOf(y) == u8);
+}
+```
+
+Integers by default are not allowed to overflow. Overflows are detectable illegal behavior.
+Sometimes being able to overflow integers in a well defined manner is wanted behavior. For this use
+case, Zig provides overflow operators.
+
+| **Normal Operator** | **Wrapping Operator** |
+| :------------------ | :-------------------- |
+| +                   | +%                    |
+| -                   | -%                    |
+| \*                  | \*%                   |
+| +=                  | +%=                   |
+| -=                  | -%=                   |
+| \*=                 | \*%=                  |
+
+```zig
+test "well defined overflow" {
+    var a: u8 = 255;
+    a +% = 1;
+    try expect(a == 0);
+}
+```
+
+### Floats
+
+Zig's floats are strictly IEEE compliant unless `@setFloatMode(.Optimized)` is used, which is
+equivalent to GCC's `-ffast-math`. Floats coerce to larger float types.
+
+```zig
+test "float widening" {
+    const a: f16 = 0;
+    const b: f32 = a;
+    const c: f128 = b;
+    try expect(c == @as(f128, a));
+}
+```
+
+Floats support multiple kinds of literal.
+
+```zig
+const floating_point: f64 = 123.0E+77;
+const another_float: f64 = 123.0;
+const yet_another: f64 = 123.0e+77;
+
+const hex_floating_point: f64 = 0x103.70p-5;
+const another_hex_float: f64 = 0x103.70;
+const yet_another_hex_float: f64 = 0x103.70P-5;
+```
+
+Underscores may also be placed between digits.
+
+```zig
+const lightspeed: f64 = 299_792_458.000_000;
+const nanosecond: f64 = 0.000_000_001;
+const more_hex: f64 = 0x1234_5678.9ABC_CDEFp-10;
+```
+
+Integers and floats may be converted using the built-in functions `@intToFloat` and `@floatToInt`.
+`@intToFloat` is always safe, whereas `@floatToInt` is detectable illegal behavior if the float
+value cannot fit in the integer destination type.
+
+```zig
+test "int-float conversion" {
+    const a: i32 = 0;
+    const b = @intToFloat(f32, a);
+    const c = @floatToInt(i32, b);
+    try expect(c == a);
+}
+```
+
+### Labelled Blocks
+
+Block in Zig are expressions and can be given labels, which are used to yield values. Here, we are
+using a label called blk. Blocks yield values, meaning that they can be used in place of a value.
+The value of an empty block `{}` is a value of the type `void`.
+
+```zig
+test "labelled blocks" {
+    const count = blk: {
+        var sum: u32 = 0;
+        var i: u32 = 0;
+        while (i < 10) : (i += 1) sum += i;
+        break :blk sum;
+    };
+    try expect(count == 45);
+    try expect(@TypeOf(count) == u32);
+}
+```
+
+This can be seen as being qeuivalent to C's `i++`.
+
+```zig
+blk: {
+    const tmp = i;
+    i += 1;
+    break :blk tmp;
+}
+```
+
+### Labelled Loops
+
+Loops can be given labels, allowing you to `break` and `continue` to outer loops.
+
+```zig
+test "nested continue" {
+    var count: usize = 0;
+    outer: for ([_]i32{ 1, 2, 3, 4, 5, 6, 7, 8 }) |_| {
+        for ([_]i32{ 1, 2, 3, 4, 5 }) |_| {
+            count += 1;
+            continue :outer;
+        }
+    }
+    try expect(count == 8);
+}
+```
+
+### Loops as expressions
+
+Like `return`, `break` accpets a value. This can be used to yield a value from a loop. Loops in Zig
+also have an `else` branch on loops, which is evaluated when the loop is not exited from with a
+`break`.
+
+```zig
+fn rangeHasNumber(begin: usize, end: usize, number: usize) bool {
+    var i = begin;
+    return while (i < end) : (i += 1) {
+        if (i == number) {
+            break true;
+        }
+    } else false;
+}
+
+test "while loop expression" {
+    try expect(rangeHasNumber(0, 10, 3));
+}
+```
+
+### Optionals
+
+Optionals use the syntax `?T` and are used to store the data `null`, or a value of type `T`.
+
+```zig
+test "optional" {
+    var found_index: ?usize = null;
+    const data = [_]i32{ 1, 2, 3, 4, 5, 6, 7, 8, 12 };
+    for (data) |v, i| {
+        if (v == 10) found_index = i;
+    }
+    try expect(found_index == null);
+}
+```
+
+Optionals support the `orelse` expression, which acts when the optional is `null`. This unwraps the
+optional to its child type.
+
+```zig
+test "orelse" {
+    var a: ?f32 = null;
+    var b = a orelse 0;
+    try expect(b == 0);
+    try expect(@TypeOf(b) == f32);
+}
+```
+
+`?` is a shorthand for `orelse unreachable`. This is used for when you know it is impossible for an
+optional value to be null, and using to unwrap a `null` value is detectable illegal behavior.
+
+```zig
+test "orelse unreachable" {
+    const a: ?f32 = 5;
+    const b = a orelse unreachable;
+    const c = a.?;
+    try expect(b == c);
+    try expect(@TypeOf(c) == f32);
+}
+```
+
+Payload capturing works in many places for optionals, meaning that in the event that it is non-null
+we can "capture" its non-null value.
+
+Here we use an `if` optional payload capture; a and b are equivalent here. `if (b) |value|` captures
+the value of `b` (in the cases where `b` is not null), and makes it avaiable as `value`. As in the
+union example, the captured value is immutable, but we can still use a pointer capture to modify the
+value stored in `b`.
+
+```zig
+test "if optional payload capture" {
+    const a: ?i32 = 5;
+    if (a != null) {
+        const value = a.?;
+        _ = value;
+    }
+
+    var b: ?i32 = 5;
+    if (b) |*value| {
+        value.* += 1;
+    }
+    try expect(b.? == 6);
+}
+```
+
+And with `while`:
+
+```zig
+var numbers_left: u32 = 4;
+fn eventuallyNullSequence() ?u32 {
+    if (numbers_left == 0) return null;
+    numbers_left -= 1;
+    return numbers_left;
+}
+
+test "while null capture" {
+    var sum: u32 = 0;
+    while (eventuallyNullSequence()) |value| {
+        sum += value;
+    }
+    try expect(sum == 6); // 3 + 2 + 1
+}
+```
+
+Optional pointer and optional slice types do not take up any extra memory, compared to non-optional
+ones. This is because internally they use the 0 value of the pointer for `null`.
+
+This is how null pointers in Zig work - they must be unwrapped to a non-optional before
+dereferencing, which stops null pointer dereferences form happening accidentally.
