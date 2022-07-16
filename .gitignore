@@ -1,3 +1,6 @@
+# Root project
+.vscode
+
 # Introduction to Computer Graphics
 *.class
 
@@ -22,3 +25,6 @@ Package.resolved
 pubspec.lock
 build/
 doc/api/
+
+# Zig Learn
+zig-cache

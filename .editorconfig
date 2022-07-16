@@ -27,3 +27,7 @@ indent_size = 2
 [*.dart]
 indent_style = space
 indent_size = 2
+
+[*.zig]
+indent_size = space
+indent_space = 4
