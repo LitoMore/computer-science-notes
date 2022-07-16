@@ -23,11 +23,11 @@ Code written at global scope is used as the entry point for the program, so you 
 
 A constant or variable must have the type as the value you want to assign to it.
 
-If the initial value doesn't provide enough information (or if there is no initial value),
-specify the type by writing the variable, separated by a colon.
+If the initial value doesn't provide enough information (or if there is no initial value), specify
+the type by writing the variable, separated by a colon.
 
-Values are never implicitly converted to another type If you need to convert a value to a
-different type, explicitly make an instance of the desired type.
+Values are never implicitly converted to another type If you need to convert a value to a different
+type, explicitly make an instance of the desired type.
 
 #### Control Flow
 
@@ -67,8 +67,8 @@ Create an instance of class by putting parentheses after the class name.
 
 #### Enumerations and Structures
 
-By default, Swift assigns the raw values starting at zero and incrementing by one each time, but
-you can change this behavior by explicitly specifying values.
+By default, Swift assigns the raw values starting at zero and incrementing by one each time, but you
+can change this behavior by explicitly specifying values.
 
 Use the `init?(rawValue:)` initializer to make an instance of an enumeration from a raw value.
 

@@ -5,7 +5,7 @@
   </head>
 
   <body onload="init()">
-    <canvas id='the-canvas' width='640' height='480'></canvas>
+    <canvas id="the-canvas" width="640" height="480"></canvas>
   </body>
 
   <script>
@@ -13,12 +13,12 @@
     let graphics;
 
     function draw() {
-      graphics.fillText('Hello World', 10, 20);
+      graphics.fillText("Hello World", 10, 20);
     }
 
     function init() {
-      canvas = document.getElementById('the-canvas');
-      graphics = canvas.getContext('2d');
+      canvas = document.getElementById("the-canvas");
+      graphics = canvas.getContext("2d");
       draw();
     }
   </script>

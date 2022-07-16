@@ -11,9 +11,9 @@ information transmission, reception, and response.
 
 ### 1.2 Words and numbers
 
-When language and vocabulary grew to a certain size, they could no longer fit inside a single
-human brain -- just as no one today can remember all the wisdom of mankind. A need for efficient
-recording of information arose, and its solution was writing.
+When language and vocabulary grew to a certain size, they could no longer fit inside a single human
+brain -- just as no one today can remember all the wisdom of mankind. A need for efficient recording
+of information arose, and its solution was writing.
 
 When a single world can take on many meanings, ambiguities inevitably emerge. Given different
 environments, a word can dance from one meaning to another. Disambiguation, or determining the
@@ -62,4 +62,6 @@ finite set of rules (trivially, we can enumerate all words), the latter cannot.
 Mathematics is the underlying thread through past and present.
 
 <!-- Links -->
-[communication-model]: https://raw.githubusercontent.com/LitoMore/computer-science-notes/master/the-beauty-of-mathematics-in-computer-science/img/communication-model.jpg
+
+[communication-model]:
+  https://raw.githubusercontent.com/LitoMore/computer-science-notes/master/the-beauty-of-mathematics-in-computer-science/img/communication-model.jpg

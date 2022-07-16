@@ -1,5 +1,5 @@
-const LinedListNode = require('./linked-list-node');
-const Comparator = require('../utils/comparator');
+const LinedListNode = require("./linked-list-node");
+const Comparator = require("../utils/comparator");
 
 module.export = class {
 	constructor(comparatorFunction) {
@@ -67,7 +67,7 @@ module.export = class {
 		return deleteNode;
 	}
 
-	find({value, callback}) {
+	find({ value, callback }) {
 		if (!this.head) {
 			return null;
 		}
