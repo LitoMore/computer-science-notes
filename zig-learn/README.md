@@ -1333,3 +1333,414 @@ test "**" {
     ));
 }
 ```
+
+### Payload Captures
+
+Payload captures use the syntax `|value|` and appear in many places, some of which we've seen
+already. Wherever they appear are used to "capture" the value from something.
+
+With if statement and optionals.
+
+```zig
+test "optional-if" {
+    var maybe_num: ?usize = 10;
+    if (maybe_num) |n| {
+        try expect(@TypeOf(n) == usize);
+        try expect(n == 10);
+    } else {
+        unreachable;
+    }
+}
+```
+
+With if statements and error unions. The else with the error capture is required here.
+
+```zig
+test "error union if" {
+    var ent_num: error{UnknownEntity}!u32 = 5;
+    if (ent_num) |entity| {
+        try expect(@TypeOf(entity) == u32);
+        try expect(entity == 5);
+    } else |err| {
+        _ = err catch {};
+        unreachable;
+    }
+}
+```
+
+With while loops and optionals. This may have an else block.
+
+```zig
+test "while optional" {
+    var i: ?u32 = 10;
+    while (i) |num| : (i.? -= 1) {
+        try expect(@TypeOf(num) == u32);
+        if (num == 1) {
+            i = null;
+            break;
+        }
+    }
+    try expect(i == null);
+}
+```
+
+With while loops and error unions. The else with the error capture is required here.
+
+```zig
+var numbers_left2: u32 = undefined;
+
+fn eventuallyErrorSequence() !u32 {
+    return if (numbers_left2 == 0) error.ReachedZero else blk: {
+        numbers_left2 -= 1;
+        break :blk numbers_left2;
+    };
+}
+
+test "while error union capture" {
+    var sum: u32 = 0;
+    numbers_left2 = 3;
+    while (eventuallyErrorSequence()) |value| {
+        sum += value;
+    } else |err| {
+        try expect(err == error.ReachedZero);
+    }
+}
+```
+
+For loops.
+
+```zig
+test "for capture" {
+    const x = [_]i8{1, 5, 120, -5};
+    for (x) |v| try expect(@TypeOf(v) == i8);
+}
+```
+
+Switch cases on tagged unions.
+
+```zig
+const Info = union(enum) {
+    a: u32,
+    b: []const u8,
+    c,
+    d: u32,
+};
+
+test "switch capture" {
+    var b = Info{ .a = 10 };
+    const x = switch (b) {
+        .b => |str| blk: {
+            try expect(@TypeOf(str) == []const u8);
+            break :blk 1;
+        },
+        .c => 2,
+        //if these are of the same type, they
+        //may be inside the same capture group
+        .a, .d => |num| blk: {
+            try expect(@TypeOf(num) == u32);
+            break :blk num * 2;
+        },
+    };
+    try expect(x == 20);
+}
+```
+
+As we saw in the Union and Optional sections above, values captured with the `|val|` syntax are
+immutable (similar to function arguments), but we can use pointer capture to modify the original
+values. This captures the values as pointers that are themselves still immutable, but because the
+value is now a pointer, we can modify the original value by dereferencing it:
+
+```zig
+test "for with pointer capture" {
+    var data = [_]u8{1, 2, 3};
+    for (data) |*byte| byte.* += 1;
+    try expect(eql(u8, &data, &[_]u8{2, 3, 4}));
+}
+```
+
+### Inline Loops
+
+`inline` loops are unrolled, and allow some things to happen which only work at compile time. Here
+we use a `for`, but a `while` works similarly.
+
+```zig
+test "inline for" {
+    const types = [_]type{ i32, f32, u8, bool };
+    var sum: usize = 0;
+    inline for (types) |T| sum += @sizeOf(T);
+    try expect(sum == 10);
+}
+```
+
+Using these for performance reasons is inadvisable unless you've tested that explicitly unrolling is
+faster; the compiler tends to make better decisions here than you.
+
+### Opaque
+
+`opaque` types in Zig have an unknown (albeit non-zero) size and alignment. Because of this these
+date types cannot be stored directly. These are used to maintain type safety with pointers to types
+that we don't have information about.
+
+```zig
+const Window = opaque {};
+const Button = opaque {};
+
+extern fn show_window(*Window) callconv(.C) void;
+
+test "opaque" {
+    var main_window: *Window = undefined;
+    show_window(main_window);
+
+    var ok_button: *Button = undefined;
+    show_window(ok_button);
+}
+
+```
+
+```
+./test-c1.zig:653:17: error: expected type '*Window', found '*Button'
+    show_window(ok_button);
+                ^
+./test-c1.zig:653:17: note: pointer type child 'Button' cannot cast into pointer type child 'Window'
+    show_window(ok_button);
+                ^
+```
+
+Opaque types may have declaration in their definitions (the same as structs, enums and unions).
+
+```zig
+const Window = opaque {
+    fn show(self: *Window) void {
+        show_window(self);
+    }
+};
+
+extern fn show_window(*Window) callconv(.C) void;
+
+test "opaque with declarations" {
+    var main_window: *Window = undefined;
+    main_window.show();
+}
+```
+
+The typical usecase of opaque is to maintain type safety when interoperating with C code that does
+not expose complete type information.
+
+### Anonymous Structs
+
+The struct type may be omitted from a struct literal. These literals may coerce to other struct
+types.
+
+```zig
+test "anonymous struct literal" {
+    const Point = struct { x: i32, y: i32 };
+
+    var pt: Point = .{
+        .x = 13,
+        .y = 67,
+    };
+    try expect(pt.x == 13);
+    try expect(pt.y == 67);
+}
+```
+
+Anonymous structs may be completely anonymous i.e. without being coerced to another struct type.
+
+```zig
+test "fully anonymous struct" {
+    try dump(.{
+        .int = @as(u32, 1234),
+        .float = @as(f64, 12.34),
+        .b = true,
+        .s = "hi",
+    });
+}
+
+fn dump(args: anytype) !void {
+    try expect(args.int == 1234);
+    try expect(args.float == 12.34);
+    try expect(args.b);
+    try expect(args.s[0] == 'h');
+    try expect(args.s[1] == 'i');
+}
+```
+
+Anonymous structs without field names may be create, and are referred to as **tuples**. These have
+many of the properties that arrays do; tuples can be iterated over, indexed, can be used with the
+`++` and `**` operators, and have a len field. Internally, these have numbered field names starting
+at `"0"`, which may be accessed with the special syntax `@"0"` which acts as an escape for the
+syntax - things inside `@""` are always recognised as identifiers.
+
+An `inline` loops must be used to iterate over the tuple here, as the type of each tuple field may
+differ.
+
+```zig
+test "tuple" {
+    const values = .{
+        @as(u32, 1234),
+        @as(f64, 12.34),
+        true,
+        "hi",
+    } ++ .{false} ** 2;
+    try expect(values[0] == 1234);
+    try expect(values[4] == false);
+    inline for (values) |v, i| {
+        if (i != 2) continue;
+        try expect(v);
+    }
+    try expect(values.len == 6);
+    try expect(values.@"3"[0] == 'h');
+}
+```
+
+### Sentinel Termination
+
+Arrays, slices and many pointers may be terminated by a value of their child type. This is known as
+sentinel termination. These follow the syntax `[N:t]T`, `[:t]T`, and `[*:t]T`, where `t` is a value
+of the child type.
+
+An example of sentinel terminated array. The built-in `@bitCast` is used to perform an unsafe
+bitwise type conversion. This shows us that the last element of the array is followed by a 0 byte.
+
+```zig
+test "sentinel termination" {
+    const terminated = [3:0]u8{ 3, 2, 1 };
+    try expect(terminated.len == 3);
+    try expect(@bitCast([4]u8, terminated)[3] == 0);
+}
+```
+
+The types of string literals is `*cosnt [N:0]u8`, where N is the length of the string. This allows
+string literals to coerce to centinel terminated sices, and sentinel terminated many pointers. Note:
+string literals are UTF-8 encoded.
+
+```zig
+test "string literal" {
+    try expect(@TypeOf("hello") == *const [5:0]u8);
+}
+```
+
+`[*:0]u8` and `[*:0]const` perfectly model C's stirngs.
+
+```zig
+test "C string" {
+    const c_string: [*:0]const u8 = "hello";
+    var array: [5]u8 = undefined;
+
+    var i: usize = 0;
+    while (c_string[i] != 0) : (i += 1) {
+        array[i] = c_string[i];
+    }
+}
+```
+
+Sentinel terminated types coerce to their non-sentinel-terminated counterparts.
+
+```zig
+test "coercion" {
+    var a: [*:0]u8 = undefined;
+    const b: [*]u8 = a;
+    _ = b;
+
+    var c: [5:0]u8 = undefined;
+    const d: [5]u8 = c;
+    _ = d;
+
+    var e: [:10]f32 = undefined;
+    const f = e;
+    _ = f;
+}
+```
+
+Sentinel terminated slicing is provided which can be used to create a sentinel terminated slice with
+the syntax `x[n..m:t]`, where `t` is the terminator value. Doing this is an assertion from the
+programmer that the memory is terminated where it should be - getting this wrong is detectable
+illegal behavior.
+
+```zig
+test "sentinel terminated slicing" {
+    var x = [_:0]u8{255} ** 3;
+    const y = x[0..3:0];
+    _ = y;
+}
+```
+
+### Vectors
+
+Zig provides vector types for SIMD. These are not to be conflated with vectors in a mathematical
+sense, or vectors like C++’s std::vector (for this, see “Arraylist” in chapter 2). Vectors may be
+created using the `@Type` built-in we used earlier, and `std.meta.Vector` provides a shorthand for
+this.
+
+Vectors can only have child types of booleans, integers, floats and pointers.
+
+Operations between vectors with the same child type and length can take place. These operations are
+performed on each of the values in the vector.`std.meta.eql` is used here to check for equality
+between two vectors (also useful for other types like structs).
+
+```zig
+const meta = @import("std").meta;
+const Vector = meta.Vector;
+
+test "vector add" {
+    const x: Vector(4, f32) = .{ 1, -10, 20, -1 };
+    const y: Vector(4, f32) = .{ 2, 10, 0, 1 };
+    const z = x + y;
+    try expect(meta.eql(z, Vector(4, f32){ 3, 0, 20, 0 }));
+}
+```
+
+Vector are indexable.
+
+```zig
+test "vector indexing" {
+    const x: Vector(4, u8) = .{ 255, 0, 255, 0 };
+    try expect(x[0] == 255);
+}
+```
+
+The built-in function `@splat` may be used to construct a vector where all of the values are the
+same. Here we use it to multiply a vector by a scalar.
+
+```zig
+test "vector * scalar" {
+    const x: Vector(3, f32) = .{ 12.5, 37.5, 2.5 };
+    const y = x * @splat(3, @as(f32, 2));
+    try expect(meta.eql(y, Vector(3, f32){ 25, 75, 5 }));
+}
+```
+
+Vectors do not have a `len` field like arrays, but may still be looped over. Here, `std.mem.len` is
+used as a shortcut for `@typeInfo(@TypeOf(x)).Vector.len`.
+
+```zig
+const len = @import("std").mem.len;
+
+test "vector looping" {
+    const x = Vector(4, u8){ 255, 0, 255, 0 };
+    var sum = blk: {
+        var tmp: u10 = 0;
+        var i: u8 = 0;
+        while (i < len(x)) : (i += 1) tmp += x[i];
+        break :blk tmp;
+    };
+    try expect(sum == 510);
+}
+```
+
+Vectors coerce to their respective arrays.
+
+```zig
+const arr: [4]f32 = @Vector(4, f32){ 1, 2, 3, 4 };
+```
+
+It is worth noting that using explicit vectors may result in slower software if you do not make the
+right decisions - the compiler’s auto-vectorisation is fairly smart as-is.
+
+### Imports
+
+The built-in function `@import` takes in a file, and gives you a struct type based on that file. All
+declarations labelled as `pub` (for public) will end up in this struct type, ready for use.
+
+`@import("std")` is a special case in the compiler, and gives you access to the standard library.
+Other `@import`s will take in a file path, or a package name (more on packages in a later chapter).
