@@ -64,4 +64,4 @@ Mathematics is the underlying thread through past and present.
 <!-- Links -->
 
 [communication-model]:
-  https://raw.githubusercontent.com/LitoMore/computer-science-notes/master/the-beauty-of-mathematics-in-computer-science/img/communication-model.jpg
+  https://raw.githubusercontent.com/LitoMore/computer-science-notes/main/the-beauty-of-mathematics-in-computer-science/img/communication-model.png
