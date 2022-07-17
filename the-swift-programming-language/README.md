@@ -1,5 +1,11 @@
 # The Swift Programming Language
 
+Excerpt From The Swift Programming Language Apple Inc.
+
+https://books.apple.com/us/book/id881256329
+
+This material may be protected by copyright.
+
 ## Welcome to Swift
 
 ### About Swift
@@ -107,3 +113,58 @@ You can make generic forms of functions and methods, as well as classes, enumera
 structures.
 
 Use `where` right before the body to specify a list of requirements.
+
+## Language Guide
+
+### The Basics
+
+Swift provides its own versions of all fundamental C and Objective-C types, including `Int` for
+integers, `Double` and `Float` for floating-point values, `Bool` for Boolean values, and `String`
+for textual data. Swift also provides powerful versions of the three primary collection type,
+`Array`, `Set`, and `Dictionary`, as decribed in `Collection Types`.
+
+Swift also introduces optional types, which handle the absence of a value. Optionals say either
+"there is a value, and it equals x" or "there isn't a value at all". Using optionals is similar to
+using `nil` with pointers in Objective-C, but they work for any type, not just classes. Not only are
+optionals safer and more expressive than `nil` pointers in Objective-C, they’re at the heart of many
+of Swift’s most powerful features.
+
+Swift is a type-safe language, which means the language helps you to be clear about the types of
+values your code can work with. If part of your code requires a `String`, type safety prevents you
+from passing it an `Int` by mistake. Likewise, type safety prevents you from accidentally passing an
+optional `String` to a piece of code that requires a non-optional `String`. Type safety helps you
+catch and fix errors as early as possible in the development process.
+
+#### Constants and Variables
+
+Constants and variables associate a name (such as `maximumNumberOfLoginAttempts` or
+`welcomeMessage`) with a value of particular type (such as the number `10` or the string `"Hello"`).
+The value of a _constant_ can't be chagned once it's set, whereas a _variable_ can be set to a
+different value in the future.
+
+##### Declaring Constants and Variables
+
+Constants and variabes msut be declared before they're used. You declare constants with the `let`
+keyword and variables with the `var` keyword.
+
+If a stored value in your code won't change, always declare it as a constant with the `let` keyword.
+Use variables only for storing values that need to be able to change.
+
+##### Type Annotations
+
+You can provide a _type annotation_ when you declare a constant or variable, to be clear about the
+kind of values the constant or variable can store. Write a type annotation by placing a colon after
+the constant or variable name, followed by a space, followed by the name of the type to use.
+
+It's rare that you need to write type annotations in practice. If you provide an initial value for a
+constant or variable at the point that it's defined, Swift can almost always infer the type to be
+used for that constant or variable, as described in **Type Safety and Type Inference**. In the
+`welcomeMessage` example above, no initial value is provided, and so the type of the
+`welcomeMessage` variable is specified with a type annotation rather than being inferred from an
+initial value.
+
+##### Naming Constants and Variables
+
+If you need to give a constant or variable the same name as a reserved Swift keyword, surround the
+keyword with backticks (`` ` ``) when using it as a name. However, avoid using keywords as names
+unless you have absolutely no choice.
