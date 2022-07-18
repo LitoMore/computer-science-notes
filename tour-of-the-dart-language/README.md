@@ -1,5 +1,11 @@
 # Tour of the Dart language
 
+Excerpt From A tour of the Dart language
+
+https://dart.dev/guides/language/language-tour
+
+This material may be protected by copyright.
+
 ## Important concepts
 
 - Everything you can place in a variable is an _Object_, and every _Object_ is an instance of a
