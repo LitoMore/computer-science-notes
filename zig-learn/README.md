@@ -1,5 +1,11 @@
 # Zig Learn
 
+Excerpt From Zig Learn
+
+https://ziglearn.org
+
+This material may be protected by copyright.
+
 ## Chapter 0 - Getting Started
 
 ### Welcome
