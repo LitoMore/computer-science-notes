@@ -168,3 +168,17 @@ initial value.
 If you need to give a constant or variable the same name as a reserved Swift keyword, surround the
 keyword with backticks (`` ` ``) when using it as a name. However, avoid using keywords as names
 unless you have absolutely no choice.
+
+#### Tuples
+
+You can _decompose_ a tuple's contents into separate constants or variables.
+
+If you only need some of the tuple's values, ignore parts of tuple with a underscore (`` ` ``) when
+you decompose the tuple.
+
+Alternatively, access the individual element values in a tuple using index numbers starting at zero.
+
+You can name the individual elements in tuple when the tuple is defined.
+
+If you name the elements in a tuple, you can use the element names to access the values of those
+elements.
