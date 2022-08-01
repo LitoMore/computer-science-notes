@@ -11,6 +11,7 @@
 - [Grokking Algorithms]
 - [Introduction to Computer Graphics]
 - [JavaScript Algorithms and Data Structures]
+- [Learn Ruby the Hard Way]
 - [The Beauty of Mathematics in Computer Science]
 - [The Rust Programming Language]
 - [The Swift Programming Language]
@@ -29,6 +30,8 @@ MIT
   https://github.com/LitoMore/computer-science-notes/tree/main/introduction-to-computer-graphics
 [javascript algorithms and data structures]:
   https://github.com/LitoMore/computer-science-notes/tree/main/javascript-algorithms-and-data-structures
+[learn ruby the hard way]:
+  https://github.com/LitoMore/computer-science-notes/tree/main/learn-ruby-the-hard-way
 [the beauty of mathematics in computer science]:
   https://github.com/LitoMore/computer-science-notes/tree/main/the-beauty-of-mathematics-in-computer-science
 [the rust programming language]:
