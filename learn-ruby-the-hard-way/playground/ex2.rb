@@ -19,4 +19,3 @@ puts "String literal comment"
 # End of file
 __END__
 puts "This is after the __END__"
-
